@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "codex-lcm"
+dynamic = ["version"]
+description = "Lossless Context Management for OpenAI Codex CLI"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Operating System :: MacOS",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = ["tomli>=2.0; python_version < '3.11'"]
+
+[project.optional-dependencies]
+llm = ["openai>=1.0"]
+dev = ["bandit>=1.8", "pytest>=7.0", "ruff>=0.9"]
+
+[project.scripts]
+codex-lcm = "codex_lcm.cli:main"
+
+[tool.setuptools.dynamic]
+version = {attr = "codex_lcm.__version__"}
+
+[tool.setuptools]
+packages = ["codex_lcm", "codex_lcm.hooks"]
+include-package-data = false
+
+[tool.pytest.ini_options]
+# smoke_test.py is a standalone integration script (runs at import), not a
+# pytest module — collect only test_*.py files.
+python_files = ["test_*.py"]
+testpaths = ["tests"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F"]
